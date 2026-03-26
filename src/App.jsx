@@ -191,13 +191,9 @@ function App() {
       setCurrentScanSub(cleanSub);
 
       try {
-        const url = `https://www.reddit.com/r/${cleanSub}/search.json?q=${encodeURIComponent(keyword)}&sort=new&limit=25&restrict_sr=1`;
+        const url = `/api/reddit/r/${cleanSub}/search.json?q=${encodeURIComponent(keyword)}&sort=new&limit=25&restrict_sr=1`;
         console.log(url);
-        const response = await fetch(url, {
-          headers: {
-            "User-Agent": "my-app"
-          }
-        });
+        const response = await fetch(url);
         console.log(response.ok);
 
 
@@ -215,7 +211,7 @@ function App() {
             // Only fetch comments if there are any
             if (p.num_comments > 0) {
               try {
-                const postUrl = `https://www.reddit.com${p.permalink}.json`;
+                const postUrl = `/api/reddit${p.permalink}.json`;
                 const postResponse = await fetch(postUrl);
                 if (postResponse.ok) {
                   const postData = await postResponse.json();
@@ -255,6 +251,9 @@ function App() {
       } catch (err) {
         console.error(`Error processing ${sub}:`, err);
       }
+
+      // Incrementally update results so they appear immediately
+      setResults([...allResults]);
 
       // Delay to respect rate limits, unless it's the last iteration
       if (i < activeSubreddits.length - 1) {
@@ -396,7 +395,7 @@ function App() {
         </section>
 
         {/* Loading Skeletons */}
-        {isLoading && !hasSearched && (
+        {isLoading && results.length === 0 && (
           <section className="mt-14 space-y-6 animate-in fade-in duration-500 w-full">
             <div className="h-8 bg-gray-200 rounded-md w-2/3 md:w-1/3 animate-pulse mb-8"></div>
             {[1, 2, 3].map((i) => (
@@ -417,7 +416,7 @@ function App() {
         )}
 
         {/* Results Section */}
-        {hasSearched && !isLoading && (
+        {(results.length > 0 || (hasSearched && !isLoading)) && (
           <section className="mt-10 md:mt-14 animate-in fade-in slide-in-from-bottom-6 duration-700 ease-out w-full">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-5 border-b border-gray-100 gap-4">
               <h2 className="text-xl md:text-2xl font-bold text-gray-900 leading-tight">
