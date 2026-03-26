@@ -44,6 +44,7 @@ const ResultCard = ({ result }) => {
       <a href={result.permalink} target="_blank" rel="noopener noreferrer" className="text-xl font-bold text-gray-900 hover:text-primary transition-colors block mb-4 leading-tight">
         {result.title}
       </a>
+      <div>{result.selftext}</div>
 
       <div className="flex flex-wrap items-center gap-5 text-sm font-medium text-gray-500 mb-2">
         <span className="flex items-center gap-1.5" title="Upvotes">
@@ -239,6 +240,7 @@ function App() {
 
             allResults.push({
               id: p.id,
+              selftext: p.selftext,
               title: p.title,
               subreddit: `r/${p.subreddit}`,
               score: p.score,
