@@ -1,3 +1,11 @@
+# Steps to run this website
+1.  Use Mozilla Firefox to access this website
+2.  Add an extension called CORS Unblock
+3.  Then run it (make sure you don't select all the subreddits as it can encounter rate limiting, which will kill the search
+4.  Currently, for each subreddit, it finds only 25 posts (Will try to increase it in the next commit) 
+
+Link to this app :- (https://subscanify.netlify.app/)
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
